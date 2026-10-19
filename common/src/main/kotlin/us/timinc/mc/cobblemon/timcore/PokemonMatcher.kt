@@ -1,0 +1,55 @@
+package us.timinc.mc.cobblemon.timcore
+
+import com.cobblemon.mod.common.pokemon.Pokemon
+import com.mojang.serialization.Codec
+import us.timinc.mc.cobblemon.timcore.matcher.MatcherRawData
+import us.timinc.mc.cobblemon.timcore.matcher.piece.Piece
+import java.util.function.Predicate
+
+data class PokemonMatcher(
+    val raw: MatcherRawData,
+) {
+    companion object {
+        @Suppress("unused")
+        val STRING_CODEC: Codec<PokemonMatcher> = Codec.STRING.xmap(
+            { parse(it) },
+            { it.asString() }
+        )
+
+        val pieces: MutableList<Piece<*>> = mutableListOf()
+
+        fun <P : Predicate<Pokemon>> registerPiece(piece: Piece<P>): Piece<P> {
+            TimCore.debugger.debug("Registering piece with keys ${piece.allKeys.joinToString()}")
+            val overlappingKeys = pieces.flatMap { it.allKeys }.filter(piece.allKeys::contains)
+            if (overlappingKeys.isNotEmpty()) TimCore.debugger.debug(
+                "Registering piece with duplicate key(s) ${overlappingKeys.joinToString()}",
+                true
+            )
+            pieces.add(piece)
+            return piece
+        }
+
+        fun parse(string: String): PokemonMatcher = PokemonMatcher(MatcherRawData(string))
+
+        /**
+         * Legacy function, do not remove until everybody else has been recompiled against the newer version above.
+         * Alternatively, we could actually use the unused values here, but I don't think that's necessary as we
+         * handle the separators ourselves pretty well.
+         */
+        @Suppress("unused")
+        @Deprecated("Use the single-input parse w/o separator params.")
+        fun parse(
+            string: String,
+            delimiter: String = " ",
+            assigner: String = "=",
+            innerDelimiter: String = ",",
+        ): PokemonMatcher = parse(string)
+    }
+
+    val conditions: List<Predicate<Pokemon>>
+        get() = pieces.mapNotNull { it.condition(raw) }
+
+    fun matches(pokemon: Pokemon): Boolean = conditions.all { it.test(pokemon) }
+
+    fun asString(): String = raw.asString()
+}

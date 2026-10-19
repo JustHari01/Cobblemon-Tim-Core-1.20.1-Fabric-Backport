@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "${modId}",
+  "version": "${minecraft_version}-${modMyVersion}",
+  "name": "${modName}",
+  "description": "${modDescription}",
+  "authors": ["TimInc", "JustHari01"],
+  "license": "MIT",
+  "environment": "*",
+  "depends": {
+    "java": ">=17",
+    "minecraft": "${minecraft_version}",
+    "fabric": "*",
+    "cobblemon": "${cobblemon_version}"
+  },
+  "contact": {
+    "homepage": "${modDiscord}",
+    "issues": "${modIssues}",
+    "sources": "${modSource}"
+  },
+  "mixins": [
+    "mixins.tim_core.json"
+  ],
+  "icon": "${modId}_small.png",
+  "entrypoints": {
+    "main": [
+      {
+        "adapter": "kotlin",
+        "value": "us.timinc.mc.cobblemon.timcore.fabric.FabricTimCore"
+      }
+    ]
+  }
+}
