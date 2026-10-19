@@ -2,6 +2,8 @@
 
 This project backports the MIT-licensed Tim Core codebase to Minecraft 1.20.1, Fabric, and Cobblemon 1.5.2. It is an unofficial compatibility port and is not an official TimInc release.
 
+AI assistance was used to adapt portions of the code to the older APIs and to prepare this port. The original Tim Core code is by Timothy Metcalfe (TimInc) and is distributed under the MIT License. This project contains no AI-generated artwork.
+
 The upstream project targets newer Minecraft and Cobblemon versions. This backport keeps the systems that can be implemented against the 1.20.1 APIs, with the compatibility differences below.
 
 ## Target and build

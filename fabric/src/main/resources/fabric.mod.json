@@ -14,7 +14,7 @@
     "cobblemon": "${cobblemon_version}"
   },
   "contact": {
-    "homepage": "${modDiscord}",
+    "homepage": "${modHomepage}",
     "issues": "${modIssues}",
     "sources": "${modSource}"
   },
